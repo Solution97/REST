@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import javax.ws.rs.*;
 
 @Path("socialmedia")
@@ -13,12 +14,12 @@ public class Hallo {
 	@Produces("text/plain")
 	public String sayHello3(){
 		return "Willkommen auf ihrer Social Media Plattform!\n\nBefehle:\n\n"
-				+ "\tgetFriends -> Listet Freunde auf\n"
+				+ "\tgetFriend -> Listet letzten hinzugefuegten Freund auf\n"
 				+ "\taddFriend/{username} -> Fuegt einen Freund hinzu\n"
-				+ "\tgetUsername/{username} -> Gibt deinen Namen zurück";
+				+ "\tgetUsername/{username} -> Gibt deinen Namen zurueck";
 	}
 	
-	@Path("getFriends")
+	@Path("getFriend")
 	@GET
 	@Produces("text/plain")
 	public String sayHello1() throws SQLException{
@@ -43,17 +44,16 @@ public class Hallo {
 			con.close();
 
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return ersteSpalte;
+		return "Dein neuster Freund ist: " + ersteSpalte;
 	}
 	
 	
 	@Path("addFriend/{username}")
 	@GET
 	@Produces("text/plain")
-	public void sayHello(@PathParam("username") String user) throws SQLException{
+	public String sayHello(@PathParam("username") String user) throws SQLException{
 		
 		Statement stmt;
 		ResultSet rs;
@@ -74,14 +74,14 @@ public class Hallo {
 			preparedStmt.setString(1, user);
 
 			preparedStmt.execute();
-			System.out.println("Eingefügt!");
+			System.out.println(user + " wurde in deine Freundesliste eingefuegt!");
 			
 			con.close();
 
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return user + " wurde in deine Freundesliste eingefuegt!";
 	}
 	
 	
